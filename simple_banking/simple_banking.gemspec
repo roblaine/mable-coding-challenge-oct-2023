@@ -8,4 +8,7 @@ Gem::Specification.new do |s|
   s.files       = ["lib/simple_banking.rb"]
   s.homepage    = ""
   s.license     = "MIT"
+
+  # Add Rspec as dev dependency
+  s.add_development_dependency "rspec", "~> 3.2"
 end
