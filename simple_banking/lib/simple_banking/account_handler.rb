@@ -16,7 +16,7 @@ class AccountHandler
   def store(_a, _v)
   end
 
-  def transfer(_a, _ra, _v)
+  def transfer(_a, _r, _v)
   end
 
   def withdraw(_a, _v)
