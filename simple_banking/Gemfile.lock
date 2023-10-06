@@ -55,7 +55,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  csv
+  csv (~> 3.2, >= 3.2.7)
   rake (~> 13.0)
   rspec (~> 3.0)
   rubocop (~> 1.21)
