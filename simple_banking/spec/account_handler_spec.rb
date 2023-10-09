@@ -106,11 +106,12 @@ RSpec.describe AccountHandler do
       expect(accounts.read(@recipient)).to eql(opening_balance)
     end
     
-    it "does not transfer funds if it would leave the account in overdraft" do
+    it "does raise_error and not transfer funds if it would leave the account in overdraft" do
       opening_balance, recipient_funds = 0.0, 100.0
+      transfer_amount = opening_balance + 0.01
       accounts = AccountHandler.new({@default_acc_id => opening_balance, @recipient => recipient_funds})
 
-      expect { accounts.transfer(@default_acc_id, @recipient, opening_balance) }.to raise_error(Errors::OverDraftError)
+      expect { accounts.transfer(@default_acc_id, @recipient, transfer_amount) }.to raise_error(Errors::OverDraftError)
 
       expect(accounts.read(@default_acc_id)).to eql(opening_balance)
       expect(accounts.read(@recipient)).to eql(recipient_funds)

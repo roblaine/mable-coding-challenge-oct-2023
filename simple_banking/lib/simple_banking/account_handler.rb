@@ -31,6 +31,13 @@ class AccountHandler
   end
 
   def transfer(_a, _r, _v)
+    case self.has_balance?(_a, _v)
+    when false
+      raise Errors::OverDraftError
+    else
+      @accounts[_a] -= _v
+      @accounts[_r] += _v
+    end
   end
 
   def withdraw(_a, _v)
