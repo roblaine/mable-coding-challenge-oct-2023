@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require "simple_banking"
+require "simple_banking/simple_bank"
 require "simple_banking/errors"
 
-RSpec.describe SimpleBanking do
+RSpec.describe SimpleBank do
   before(:each)
-    @bank = SimpleBanking.new
+    @bank = SimpleBank.new
   end
 
   describe "setup_accounts/1" do
