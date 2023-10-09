@@ -11,7 +11,7 @@ class AccountHandler
   end
 
   def read(_a)
-    # @accounts.
+    @accounts[_a]
   end
 
   def open_acc(account_id, opening_balance)
@@ -37,6 +37,7 @@ class AccountHandler
   end
 
   def has_balance?(_a, _v)
+    @accounts[_a] >= _v
   end
   
   attr_reader :accounts

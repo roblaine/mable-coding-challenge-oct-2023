@@ -54,8 +54,7 @@ RSpec.describe AccountHandler do
   describe "read/1" do
     it "does read the account balance of a valid account" do
       accounts = AccountHandler.new({@default_acc_id => @default_opening_balance})
-      
-      expect(accounts.read(acc_id)).to eql(@default_opening_balance)
+      expect(accounts.read(@default_acc_id)).to eql(@default_opening_balance)
     end
 
     it "does not read the account balance of a non-existent account" do
@@ -123,16 +122,16 @@ RSpec.describe AccountHandler do
       opening_balance = 100.0
       accounts = AccountHandler.new({@default_acc_id => opening_balance})
 
-      expect(accounts.has_balance?(opening_balance)).to eql(true)
-      expect(accounts.has_balance?(99.99)).to eql(true)
+      expect(accounts.has_balance?(@default_acc_id, opening_balance)).to eql(true)
+      expect(accounts.has_balance?(@default_acc_id, 99.99)).to eql(true)
     end
 
     it "does not return true if the account hasn't required funds" do
       opening_balance = 0.0
       accounts = AccountHandler.new({@default_acc_id => opening_balance})
 
-      expect(accounts.has_balance?(1.0)).to eql(false)
-      expect(accounts.has_balance?(0.01)).to eql(false)
+      expect(accounts.has_balance?(@default_acc_id, 1.0)).to eql(false)
+      expect(accounts.has_balance?(@default_acc_id, 0.01)).to eql(false)
     end
   end
 end
