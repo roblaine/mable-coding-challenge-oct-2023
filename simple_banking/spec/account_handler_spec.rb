@@ -12,17 +12,17 @@ RSpec.describe AccountHandler do
     @ac = AccountHandler.new
   end
 
-  describe "store/2" do
+  describe "open_acc/2" do
     it "does open an account with id & balance returning the balance" do
       opening_balance = 100.00
 
-     expect(@ac.store(@default_acc_id, opening_balance)).to eql(opening_balance)
+     expect(@ac.open_acc(@default_acc_id, opening_balance)).to eql(opening_balance)
     end
     
     it "does accept integers as account ids" do
       acc_ids = %w["0000000000000000", "1000000000000000", "2000000000000000"]
       
-      acc_ids.map { |id| @ac.store(id, @default_opening_balance) }
+      acc_ids.map { |id| @ac.open_acc(id, @default_opening_balance) }
       
       expect(@ac.keys.length).to eql(acc_ids.length)
     end
@@ -30,12 +30,12 @@ RSpec.describe AccountHandler do
     it "does not accept account ids with invalid characters" do
       invalid_acc_id = "ABCDEFGH12341234"
       
-      @ac.store(invalid_acc_id, @default_opening_balance)
+      @ac.open_acc(invalid_acc_id, @default_opening_balance)
     end
     
-    it "does not store the same account id twice" do
-      @ac.store(@default_acc_id, @default_opening_balance)
-      @ac.store(@default_acc_id, @default_opening_balance)
+    it "does not open the same account id twice" do
+      @ac.open_acc(@default_acc_id, @default_opening_balance)
+      @ac.open_acc(@default_acc_id, @default_opening_balance)
       
       expect(@ac.keys.length).to eq(1)
     end
