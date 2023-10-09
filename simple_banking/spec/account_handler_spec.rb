@@ -90,7 +90,7 @@ RSpec.describe AccountHandler do
       expect(accounts.read(@default_acc_id)).to eql(opening_balance + deposit)    
     end
 
-    it "does not deposit to an account that does not exist" do
+    it "does raise_error and not deposit to an account that does not exist" do
       expect{ @ac.deposit("9999999999999999", 1.0) }.to raise_error(Errors::AccountMissingError)    
     end
   end

@@ -8,6 +8,12 @@ class AccountHandler
   end
 
   def deposit(_a, _v)
+    case @accounts.has_key?(_a)
+    when false
+      raise Errors::AccountMissingError
+    else
+      @accounts[_a] += _v
+    end
   end
 
   def read(_a)
