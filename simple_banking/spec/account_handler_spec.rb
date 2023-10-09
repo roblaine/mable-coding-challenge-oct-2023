@@ -4,19 +4,18 @@ require "simple_banking/account_handler"
 require "simple_banking/errors"
 
 RSpec.describe AccountHandler do
-  @default_opening_balance  = 0.0
-  @default_acc_id           = "1234123412341234"
-  @recipient                = "1234123412341230"
-
   before(:each) do
     @ac = AccountHandler.new
+    @default_opening_balance  = 0.0
+    @default_acc_id           = "1234123412341234"
+    @recipient                = "1234123412341230"
   end
 
   describe "open_acc/2" do
     it "does open an account with id & balance returning the balance" do
       opening_balance = 100.00
 
-     expect(@ac.open_acc(@default_acc_id, opening_balance)).to eql(opening_balance)
+      expect(@ac.open_acc(@default_acc_id, opening_balance)).to eql(opening_balance)
     end
     
     it "does accept integers as account ids" do
@@ -24,20 +23,28 @@ RSpec.describe AccountHandler do
       
       acc_ids.map { |id| @ac.open_acc(id, @default_opening_balance) }
       
-      expect(@ac.keys.length).to eql(acc_ids.length)
+      expect(@ac.accounts.keys.length).to eql(acc_ids.length)
     end
     
-    it "does not accept account ids with invalid characters" do
-      invalid_acc_id = "ABCDEFGH12341234"
+    it "does not accept account ids with invalid characters, returning failing account id" do
+      illegal_characters = "ABCDEFGH12341234"
       
-      @ac.open_acc(invalid_acc_id, @default_opening_balance)
+      expect(@ac.open_acc(illegal_characters, @default_opening_balance)).to eql(fifteen_digits)
+      expect(@ac.accounts.keys.length).to eql(0)
+    end
+    
+    it "does not accept account ids with invalid length, returning failing account id" do
+      fifteen_digits = "111122223333444"
+
+      expect(@ac.open_acc(fifteen_digits, @default_opening_balance)).to eql(fifteen_digits)
+      expect(@ac.accounts.keys.length).to eql(0)
     end
     
     it "does not open the same account id twice" do
       @ac.open_acc(@default_acc_id, @default_opening_balance)
       @ac.open_acc(@default_acc_id, @default_opening_balance)
       
-      expect(@ac.keys.length).to eq(1)
+      expect(@ac.accounts.keys.length).to eq(1)
     end
   end
 
@@ -48,7 +55,7 @@ RSpec.describe AccountHandler do
       expect(accounts.read(acc_id)).to eql(@default_opening_balance)
     end
 
-    it "does not read the account balance of a non-existant account" do
+    it "does not read the account balance of a non-existent account" do
       non_acc_id = "9999999999999999"
       expect(@ac.read(non_acc_id)).to eql(nil)
     end

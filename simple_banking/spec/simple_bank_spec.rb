@@ -4,7 +4,7 @@ require "simple_banking/simple_bank"
 require "simple_banking/errors"
 
 RSpec.describe SimpleBank do
-  before(:each)
+  before(:each) do
     @bank = SimpleBank.new
   end
 
