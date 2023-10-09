@@ -11,6 +11,7 @@ class AccountHandler
   end
 
   def read(_a)
+    # @accounts.
   end
 
   def open_acc(account_id, opening_balance)
@@ -20,7 +21,7 @@ class AccountHandler
       when false
         raise Errors::InvalidAccountId
       else
-        @accounts[:account_id] = opening_balance
+        @accounts[account_id] = opening_balance
         opening_balance
       end
     rescue err=Errors::InvalidAccountId
@@ -41,21 +42,12 @@ class AccountHandler
   attr_reader :accounts
   
   private
-  def account_id_is_numbers?(account_id)
-    # If the account id cannot have each char converted to a valid integer, we should say its invalid as an account id
-    !(account_id === "" || account_id.split("").map! { |digit_or_character|
-      begin Integer(digit_or_character || '')
-      rescue ArgumentError
-        nil
-      end
-    }.any? { |integer_or_nil| integer_or_nil.nil? })
-  end
-
   def valid_account_id(account_id)
-    !account_id.nil? and account_id.is_a?(String) && account_id.length == 16 && self.account_id_is_numbers?(account_id)
+    # match only 16 digit strings
+    /\d{16}/.match?(account_id)
   end
 
-  def unique_account_id(_a)
-    !@accounts.has_key?(_a)
+  def unique_account_id(account_id)
+    !@accounts.has_key?(account_id)
   end
 end

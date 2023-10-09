@@ -19,9 +19,11 @@ RSpec.describe AccountHandler do
     end
     
     it "does accept integers as account ids" do
-      acc_ids = %w["0000000000000000", "1000000000000000", "2000000000000000"]
+      acc_ids = ["0000000000000000", "1000000000000000", "2000000000000000"]
       
-      acc_ids.map { |id| @ac.open_acc(id, @default_opening_balance) }
+      acc_ids.each { |id| 
+        @ac.open_acc(id, @default_opening_balance)
+      }
       
       expect(@ac.accounts.keys.length).to eql(acc_ids.length)
     end
@@ -41,10 +43,11 @@ RSpec.describe AccountHandler do
     end
     
     it "does not open the same account id twice" do
+      @ac.open_acc("0000000000000000", @default_opening_balance)
       @ac.open_acc(@default_acc_id, @default_opening_balance)
       @ac.open_acc(@default_acc_id, @default_opening_balance)
       
-      expect(@ac.accounts.keys.length).to eq(1)
+      expect(@ac.accounts.keys.length).to eq(2)
     end
   end
 
