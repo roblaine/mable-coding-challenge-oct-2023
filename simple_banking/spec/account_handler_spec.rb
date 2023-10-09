@@ -29,7 +29,7 @@ RSpec.describe AccountHandler do
     it "does not accept account ids with invalid characters, returning failing account id" do
       illegal_characters = "ABCDEFGH12341234"
       
-      expect(@ac.open_acc(illegal_characters, @default_opening_balance)).to eql(fifteen_digits)
+      expect(@ac.open_acc(illegal_characters, @default_opening_balance)).to eql(illegal_characters)
       expect(@ac.accounts.keys.length).to eql(0)
     end
     

@@ -3,25 +3,25 @@
 class Errors
   class AccountMissingError < RuntimeError
     def exception(acc_id)
-      "The account with id: `#{acc_id}` does not exist"
+      "The account with id: #{acc_id} does not exist"
     end
   end
 
   class InvalidAccountId < RuntimeError
     def exception(acc_id)
-      "The account with id: `#{acc_id}` has illegal characters"
+      "The account with id: #{acc_id} has illegal characters"
     end
   end
 
   class OverDraftError < RuntimeError
     def exception(acc_id)
-      "The account with id: `#{acc_id}` does not have the required funds"
+      "The account with id: #{acc_id} does not have the required funds"
     end
   end
 
   class ParsingError < RuntimeError
     def exception(path)
-      "Failed to parse file located at `#{path}`"
+      "Failed to parse file located at #{path}"
     end
   end
 end
