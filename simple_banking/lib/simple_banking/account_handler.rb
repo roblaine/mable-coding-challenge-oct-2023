@@ -13,7 +13,7 @@ class AccountHandler
   def read(_a)
   end
 
-  def store(_a, _v)
+  def open_acc(_a, _v)
   end
 
   def transfer(_a, _r, _v)
