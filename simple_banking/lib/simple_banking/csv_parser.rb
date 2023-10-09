@@ -1,9 +1,7 @@
 require "csv"
 
 class CsvParser
-    def initialize
-    end
-
-    def read(path)
-    end
+  def read(path)
+    CSV.read(path)
+  end
 end

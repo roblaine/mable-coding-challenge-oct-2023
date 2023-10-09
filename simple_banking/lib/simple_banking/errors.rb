@@ -17,4 +17,5 @@ class Errors
     def exception(path)
       "Failed to parse file located at `#{path}`"
     end
+  end
 end
