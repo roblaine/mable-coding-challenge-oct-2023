@@ -72,7 +72,7 @@ RSpec.describe AccountHandler do
       expect(accounts.read(@default_acc_id)).to eql(opening_balance - withdraw)
     end
     
-    it "does not put an account into overdraft" do
+    it "does raise_error when an account would be put into overdraft" do
       opening_balance, withdraw = 30.0, 100.0
       accounts = AccountHandler.new({@default_acc_id => opening_balance})
       

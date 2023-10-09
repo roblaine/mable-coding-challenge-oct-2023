@@ -34,12 +34,19 @@ class AccountHandler
   end
 
   def withdraw(_a, _v)
+    case self.has_balance?(_a, _v)
+    when false
+      raise Errors::OverDraftError
+    else
+      @accounts[_a] -= _v
+    end
   end
 
   def has_balance?(_a, _v)
-    @accounts[_a] >= _v
+    self.read(_a) >= _v
   end
   
+  # This is really only used in the tests
   attr_reader :accounts
   
   private

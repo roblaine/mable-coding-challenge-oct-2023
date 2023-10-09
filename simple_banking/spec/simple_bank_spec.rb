@@ -11,8 +11,8 @@ RSpec.describe SimpleBank do
   describe "setup_accounts/1" do
     it "does create accounts from a list of account ids and balances" do
       inputs = [
-        ["1111111133334444", "42.0"], 
-        ["1111222233334444", "99.0"], 
+        ["1111111133334444", "42.0"],
+        ["1111222233334444", "99.0"],
         ["1111222222224444", "110.0"]
       ]
       failures = @simple_banking.setup_accounts(inputs)
