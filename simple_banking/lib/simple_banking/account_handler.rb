@@ -7,22 +7,22 @@ class AccountHandler
     @accounts = init_hash ||= Hash.new
   end
 
-  def deposit(_a, _v)
-    case @accounts.has_key?(_a)
+  def deposit(account_id, value)
+    case @accounts.has_key?(account_id)
     when false
       raise Errors::AccountMissingError
+      nil
     else
-      @accounts[_a] += _v
+      @accounts[account_id] += value
     end
   end
 
-  def read(_a)
-    @accounts[_a]
+  def read(account_id)
+    @accounts[account_id]
   end
 
   def open_acc(account_id, opening_balance)
     begin
-      # validate account_id first
       case self.valid_account_id(account_id) and self.unique_account_id(account_id)
       when false
         raise Errors::InvalidAccountId
@@ -36,27 +36,27 @@ class AccountHandler
     end
   end
 
-  def transfer(_a, _r, _v)
-    case self.has_balance?(_a, _v)
+  def transfer(account_id, recipient_account_id, value)
+    case self.has_balance?(account_id, value)
     when false
       raise Errors::OverDraftError
     else
-      @accounts[_a] -= _v
-      @accounts[_r] += _v
+      @accounts[account_id] -= value
+      @accounts[recipient_account_id] += value
     end
   end
 
-  def withdraw(_a, _v)
-    case self.has_balance?(_a, _v)
+  def withdraw(account_id, value)
+    case self.has_balance?(account_id, value)
     when false
       raise Errors::OverDraftError
     else
-      @accounts[_a] -= _v
+      @accounts[account_id] -= value
     end
   end
 
-  def has_balance?(_a, _v)
-    self.read(_a) >= _v
+  def has_balance?(account_id, value)
+    self.read(account_id) >= value
   end
   
   # This is really only used in the tests
