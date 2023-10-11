@@ -78,7 +78,15 @@ RSpec.describe SimpleBank do
 
   describe "report/0" do
     it "does generate a report of current accounts" do
-      fail
+      account_id, opening_balance = "1234123412341234", 100.0
+
+      acc_handler = AccountHandler.new({account_id => opening_balance})
+
+      bank = SimpleBank.new(acc_handler)
+      report = bank.report(account_id)
+      expected = "Account with id: #{account_id} has $#{opening_balance} funds."
+
+      expect(report).to eql(expected)
     end
   end
 end
