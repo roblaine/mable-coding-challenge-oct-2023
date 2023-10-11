@@ -38,18 +38,33 @@ class SimpleBank
       @accounts.open_acc(acc_id, balance) 
     }.compact()
   end
+
+  def execute_transfers_from_file(path=@default_transfer_path)
+    begin
+      self.execute_transfers(@parser.read(file_path))
+    rescue Errno::ENOENT
+      Errno::ENOENT
+    rescue fte=Errors::FileTypeError
+      logger.error(fte.new().exception(file_path))
+      file_path
+    end
+  end
   
-  def execute_transfers(path)
+  def execute_transfers(transfers=[])
   end
 
   def report(account_id=nil)
+    p self.generate_report(account_id)
+  end
+
+  def generate_report(account_id=nil)
     case account_id
     when nil
       @accounts.accounts.keys.map{
-        |account_id| p "Account with id: #{account_id} has $#{@accounts.read(account_id)} funds."
+        |account_id| "Account with id: #{account_id} has $#{@accounts.read(account_id)} funds."
     }.join("\n")
     else
-      @accounts.read(account_id)
+      "Account with id: #{account_id} has $#{@accounts.read(account_id)} funds."
     end
   end
 

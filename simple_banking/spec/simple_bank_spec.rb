@@ -76,14 +76,14 @@ RSpec.describe SimpleBank do
     end
   end
 
-  describe "report/1" do
+  describe "generate_report/1" do
     it "does generate a report by id" do
       account_id, opening_balance = "1234123412341234", 100.0
 
       acc_handler = AccountHandler.new({account_id => opening_balance})
 
       bank = SimpleBank.new(acc_handler)
-      report = bank.report(account_id)
+      report = bank.generate_report(account_id)
       expected = "Account with id: #{account_id} has $#{opening_balance} funds."
 
       expect(report).to eql(expected)
@@ -95,7 +95,7 @@ RSpec.describe SimpleBank do
       acc_handler = AccountHandler.new({account_id => opening_balance, account_id_2 => opening_balance})
       bank = SimpleBank.new(acc_handler)
 
-      report = bank.report()
+      report = bank.generate_report()
       expected = "Account with id: #{account_id} has $#{opening_balance} funds.\nAccount with id: #{account_id_2} has $#{opening_balance} funds."
 
       expect(report.inspect).to eql(expected.inspect)
