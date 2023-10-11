@@ -71,13 +71,13 @@ RSpec.describe SimpleBank do
       fail
     end
 
-    it "does not perform transfers if accounts lack funds" do
+    it "does not perform transfers if account lacks funds" do
       fail
     end
   end
 
-  describe "report/0" do
-    it "does generate a report of current accounts" do
+  describe "report/1" do
+    it "does generate a report by id" do
       account_id, opening_balance = "1234123412341234", 100.0
 
       acc_handler = AccountHandler.new({account_id => opening_balance})
@@ -87,6 +87,18 @@ RSpec.describe SimpleBank do
       expected = "Account with id: #{account_id} has $#{opening_balance} funds."
 
       expect(report).to eql(expected)
+    end
+
+    it "does generate a report of all accounts" do
+      account_id, account_id_2, opening_balance = "1234123412341234", "1234123412341235", 100.0
+
+      acc_handler = AccountHandler.new({account_id => opening_balance, account_id_2 => opening_balance})
+      bank = SimpleBank.new(acc_handler)
+
+      report = bank.report()
+      expected = "Account with id: #{account_id} has $#{opening_balance} funds.\nAccount with id: #{account_id_2} has $#{opening_balance} funds."
+
+      expect(report.inspect).to eql(expected.inspect)
     end
   end
 end
