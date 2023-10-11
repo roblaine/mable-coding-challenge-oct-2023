@@ -6,8 +6,9 @@ require "simple_banking/errors"
 RSpec.describe CsvParser do
   before(:all) do
     @csv_parser = CsvParser.new
-    @sample_path = "./spec/fixtures/sample_acc_balance.csv"
-    @duplicate_path = "./spec/fixtures/duplicate_acc_balance.csv"
+    @sample_csv_path = "./spec/fixtures/sample_acc_balance.csv"
+    @duplicate_csv_path = "./spec/fixtures/duplicate_acc_balance.csv"
+    @non_csv_path = "./spec/fixtures/non_csv.txt"
   end
 
   describe "read/1" do
@@ -16,7 +17,7 @@ RSpec.describe CsvParser do
     end
 
     it "does return a list of accounts and opening balances" do
-      results = @csv_parser.read(@sample_path)
+      results = @csv_parser.read(@sample_csv_path)
 
       expect(results).to be_a Array
       expect(results.length).to eql(2)
@@ -28,12 +29,15 @@ RSpec.describe CsvParser do
       expect(results.first.last).to eql("5000.00")
     end
     
-    
     it "does not filter out duplicates" do
-      results = @csv_parser.read(@duplicate_path)
+      results = @csv_parser.read(@duplicate_csv_path)
 
       expect(results).to be_a Array
       expect(results.length).to eql(5)
+    end
+
+    it "does raise an error when given a non csv file" do
+      expect{ @csv_parser.read(@non_csv_path) }.to raise_error(Errors::FileTypeError)
     end
   end
 end

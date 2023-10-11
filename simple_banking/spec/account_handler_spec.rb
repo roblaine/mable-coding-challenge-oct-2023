@@ -12,19 +12,22 @@ RSpec.describe AccountHandler do
   end
 
   describe "open_acc/2" do
-    it "does open an account with id & balance returning the balance" do
+    it "does open an account with id & balance returning nil upon success" do
       opening_balance = 100.00
 
-      expect(@ac.open_acc(@default_acc_id, opening_balance)).to eql(opening_balance)
+      expect(@ac.open_acc(@default_acc_id, opening_balance)).to eql(nil)
     end
     
     it "does accept integers as account ids" do
       acc_ids = ["0000000000000000", "1000000000000000", "2000000000000000"]
-      
+      failed_opens = []
+
       acc_ids.each { |id| 
-        @ac.open_acc(id, @default_opening_balance)
+        failed_opens.push(@ac.open_acc(id, @default_opening_balance))
       }
-      
+      failed_opens = failed_opens.compact
+  
+      expect(failed_opens).to eql([])
       expect(@ac.accounts.keys.length).to eql(acc_ids.length)
     end
     
