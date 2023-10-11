@@ -9,10 +9,13 @@ include Logging
 class CsvParser
   def read(path, headers=false)
     maybe_csv_data = File.open(path) do |maybe_csv_file|
-      CSV.table(maybe_csv_file, headers: headers)
+      maybe_csv_string = maybe_csv_file.read
+      # TODO: Refactor to use headers: ["account_id", "balance"]
+      CSV.parse(maybe_csv_string, headers: headers)
     end
 
-    if !maybe_csv_data.empty?
+    # TODO: Using the above refactor, traverse the table to use returns the rows
+    if maybe_csv_data.length > 1
       maybe_csv_data
     else
       raise Errors::FileTypeError

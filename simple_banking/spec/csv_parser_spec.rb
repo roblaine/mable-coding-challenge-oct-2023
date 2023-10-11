@@ -22,11 +22,12 @@ RSpec.describe CsvParser do
       expect(results).to be_a Array
       expect(results.length).to eql(2)
 
-      expect(results.first.first).to be_a String
-      expect(results.first.last).to be_a String
+      first_result, last_result = results.first.first, results.first.last
 
-      expect(results.first.first).to eql("6666234522226789")
-      expect(results.first.last).to eql("5000.00")
+      expect(first_result).to be_a String
+      expect(last_result).to be_a String
+      expect(first_result).to eql("6666234522226789")
+      expect(last_result).to eql("5000.00")
     end
     
     it "does not filter out duplicates" do

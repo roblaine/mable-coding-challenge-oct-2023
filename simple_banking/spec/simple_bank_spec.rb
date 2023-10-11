@@ -60,20 +60,25 @@ RSpec.describe SimpleBank do
 
   describe "execute_transfers/1" do
     it "does read a csv and performs the transfers" do
+      fail
     end
 
     it "does generate a list of failed transfers" do
+      fail
     end
 
     it "does not perform transfers to invalid account ids" do
+      fail
     end
 
     it "does not perform transfers if accounts lack funds" do
+      fail
     end
   end
 
   describe "report/0" do
     it "does generate a report of current accounts" do
+      fail
     end
   end
 end
