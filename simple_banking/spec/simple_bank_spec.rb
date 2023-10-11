@@ -8,6 +8,7 @@ RSpec.describe SimpleBank do
     @bank = SimpleBank.new
 
     @sample_csv_path = "./spec/fixtures/sample_acc_balance.csv"
+    @transfers_csv_path = "./spec/fixtures/sample_transfers_balance.csv"
     @non_csv_path = "./spec/fixtures/non_csv.txt"
   end
 
@@ -58,8 +59,23 @@ RSpec.describe SimpleBank do
     end
   end
 
+  describe "execute_transfers_from_file/1" do
+    it "does read a csv file and setup accounts" do
+      failures = @bank.execute_transfers_from_file(@sample_csv_path)
+      # account_ids from the fixture file
+      expected_accounts = ["1111834566661834", "6666234522226789"]
+
+      expect(failures).to eql([])
+      expect(@bank.accounts.accounts.keys.sort).to eql(expected_accounts.sort)
+    end
+
+    it "does returns the filepath on a non csv file" do
+      expect(@bank.execute_transfers_from_file(@non_csv_path)).to eql(@non_csv_path)
+    end
+  end
+
   describe "execute_transfers/1" do
-    it "does read a csv and performs the transfers" do
+    it "does perform the transfers" do
       fail
     end
 
