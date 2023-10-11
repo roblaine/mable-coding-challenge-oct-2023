@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require_relative "./account_handler"
-require_relative "./csv_parser"
-require_relative "./errors"
-require_relative "./version"
+require "simple_banking/account_handler"
+require "simple_banking/csv_parser"
+require "simple_banking/errors"
+require "simple_banking/version"
 
 class SimpleBank
   # The actual banking occurs in AccountHandler. 

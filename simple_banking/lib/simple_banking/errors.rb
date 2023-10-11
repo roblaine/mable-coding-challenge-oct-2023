@@ -13,6 +13,12 @@ class Errors
     end
   end
 
+  class FileTypeError < RuntimeError
+    def exception(file_path)
+      "Invalid file type at path: #{file_path}"
+    end
+  end
+
   class OverDraftError < RuntimeError
     def exception(acc_id)
       "The account with id: #{acc_id} does not have the required funds"

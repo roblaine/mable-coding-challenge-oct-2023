@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "./errors"
+require "simple_banking/errors"
 
 class AccountHandler
   def initialize(init_hash=nil)
@@ -28,7 +28,7 @@ class AccountHandler
         raise Errors::InvalidAccountId
       else
         @accounts[account_id] = opening_balance
-        opening_balance
+        nil
       end
     rescue err=Errors::InvalidAccountId
       puts err.new().exception(account_id)
