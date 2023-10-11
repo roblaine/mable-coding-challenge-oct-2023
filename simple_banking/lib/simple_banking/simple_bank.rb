@@ -11,9 +11,9 @@ include Logging
 class SimpleBank
   # The actual banking occurs in AccountHandler. 
   # This module acts as an entrypoint.
-
-  def initialize
-    @accounts = AccountHandler.new
+  def initialize(initial_accounts=nil)
+    # This is setup for testing to allow creating of accounts without relying on other methods
+    @accounts = initial_accounts ||= AccountHandler.new
     @parser = CsvParser.new
 
     @default_acc_path = "../mable_acc_balance.csv"
@@ -42,7 +42,15 @@ class SimpleBank
   def execute_transfers(path)
   end
 
-  def report
+  def report(account_id=nil)
+    case account_id
+    when nil
+      @accounts.accounts.keys.map{
+        |account_id| p "Account with id: #{account_id} has $#{@accounts.read(account_id)} funds."
+    }.join("\n")
+    else
+      @accounts.read(account_id)
+    end
   end
 
   attr_reader :accounts
