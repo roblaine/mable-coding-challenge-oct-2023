@@ -2,6 +2,9 @@
 
 require "csv"
 require "simple_banking/errors"
+require "simple_banking/logging"
+
+include Logging
 
 class CsvParser
   def read(path, headers=false)
@@ -10,7 +13,7 @@ class CsvParser
     end
 
     if !maybe_csv_data.empty?
-      maybe_csv_data.
+      maybe_csv_data
     else
       raise Errors::FileTypeError
     end

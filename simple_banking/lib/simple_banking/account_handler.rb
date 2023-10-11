@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 require "simple_banking/errors"
+require "simple_banking/logging"
+
+include Logging
 
 class AccountHandler
   def initialize(init_hash=nil)
@@ -25,13 +28,15 @@ class AccountHandler
     begin
       case self.valid_account_id(account_id) and self.unique_account_id(account_id)
       when false
-        raise Errors::InvalidAccountId
+        err = Errors::InvalidAccountId
+        logger.error(err.new().exception(account_id))
+        raise err
       else
         @accounts[account_id] = opening_balance
         nil
       end
     rescue err=Errors::InvalidAccountId
-      puts err.new().exception(account_id)
+      logger.error(err.new().exception(account_id))
       account_id
     end
   end

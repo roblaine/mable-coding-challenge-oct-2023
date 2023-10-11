@@ -4,6 +4,9 @@ require "simple_banking/account_handler"
 require "simple_banking/csv_parser"
 require "simple_banking/errors"
 require "simple_banking/version"
+require "simple_banking/logging"
+
+include Logging
 
 class SimpleBank
   # The actual banking occurs in AccountHandler. 
@@ -23,7 +26,7 @@ class SimpleBank
     rescue Errno::ENOENT
       Errno::ENOENT
     rescue fte=Errors::FileTypeError
-      puts fte.new().exception(file_path)
+      logger.error(fte.new().exception(file_path))
       file_path
     end
   end
@@ -31,7 +34,7 @@ class SimpleBank
   def setup_accounts(accounts=[])
     # open_acc/2 returns nil when successful, and the acc id when failing the attempt. We can collect these in a new list
     accounts.map { |acc_id, balance| 
-      puts "#{acc_id} #{balance}"
+      # logger.info "Acc_ID: #{acc_id}, Balance: #{balance}"
       @accounts.open_acc(acc_id, balance) 
     }.compact()
   end
