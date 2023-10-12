@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require "simple_banking/errors"
-require "simple_banking/logging"
+require_relative "./errors"
+require_relative "./logging"
 
 include Logging
 
@@ -21,7 +21,7 @@ class AccountHandler
   end
 
   def read(account_id)
-    @accounts[account_id]
+    @accounts[account_id].to_f unless @accounts[account_id] == nil
   end
 
   def open_acc(account_id, opening_balance)
@@ -32,7 +32,7 @@ class AccountHandler
         logger.error(err.new().exception(account_id))
         raise err
       else
-        @accounts[account_id] = opening_balance
+        @accounts[account_id] = opening_balance.to_f
         nil
       end
     rescue err=Errors::InvalidAccountId
@@ -42,12 +42,21 @@ class AccountHandler
   end
 
   def transfer(account_id, recipient_account_id, value)
-    case self.has_balance?(account_id, value)
-    when false
-      raise Errors::OverDraftError
+    if self.read(account_id) == nil
+      raise Errors::InvalidAccountId
+      account_id
+    elsif self.read(recipient_account_id) == nil
+      raise Errors::InvalidAccountId
+      recipient_account_id
     else
-      @accounts[account_id] -= value
-      @accounts[recipient_account_id] += value
+      case self.has_balance?(account_id, value)
+      when false
+        raise Errors::OverDraftError
+      else
+        @accounts[account_id] -= value
+        @accounts[recipient_account_id] += value
+        nil
+      end
     end
   end
 
