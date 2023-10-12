@@ -10,7 +10,7 @@ include Logging
 
 class SimpleBank
   # The actual banking occurs in AccountHandler. 
-  # This module acts as an entrypoint.
+  # This class acts as an entrypoint.
   def initialize(initial_accounts=nil)
     @accounts = initial_accounts ||= AccountHandler.new
     @parser = CsvParser.new

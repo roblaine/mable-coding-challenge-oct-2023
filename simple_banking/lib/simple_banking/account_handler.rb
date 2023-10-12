@@ -21,7 +21,7 @@ class AccountHandler
   end
 
   def read(account_id)
-    @accounts[account_id].to_f unless @accounts[account_id] == nil
+    @accounts[account_id].to_f unless !@accounts.has_key?(account_id)
   end
 
   def open_acc(account_id, opening_balance)
