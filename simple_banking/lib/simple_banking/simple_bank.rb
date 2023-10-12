@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require "simple_banking/account_handler"
-require "simple_banking/csv_parser"
-require "simple_banking/errors"
-require "simple_banking/version"
-require "simple_banking/logging"
+require_relative "./account_handler"
+require_relative "./csv_parser"
+require_relative "./errors"
+require_relative "./version"
+require_relative "./logging"
 
 include Logging
 
@@ -12,7 +12,6 @@ class SimpleBank
   # The actual banking occurs in AccountHandler. 
   # This module acts as an entrypoint.
   def initialize(initial_accounts=nil)
-    # This is setup for testing to allow creating of accounts without relying on other methods
     @accounts = initial_accounts ||= AccountHandler.new
     @parser = CsvParser.new
 
@@ -34,7 +33,6 @@ class SimpleBank
   def setup_accounts(accounts=[])
     # open_acc/2 returns nil when successful, and the acc id when failing the attempt. We can collect these in a new list
     accounts.map { |acc_id, balance| 
-      # logger.info "Acc_ID: #{acc_id}, Balance: #{balance}"
       @accounts.open_acc(acc_id, balance) 
     }.compact()
   end
@@ -51,10 +49,21 @@ class SimpleBank
   end
   
   def execute_transfers(transfers=[])
+    transfers.map { |from, to, value|
+      begin
+        @accounts.transfer(from, to, value.to_f) # Conversion required for CSV parser as it reads the row as a series of strings
+      rescue ode=Errors::OverDraftError
+        logger.warn(ode.new().exception(from))
+        from
+      rescue iai=Errors::InvalidAccountId
+        logger.error(iai.new().exception(from))
+        from
+      end
+    }.compact()
   end
 
   def report(account_id=nil)
-    p self.generate_report(account_id)
+    self.generate_report(account_id)
   end
 
   def generate_report(account_id=nil)
@@ -68,5 +77,6 @@ class SimpleBank
     end
   end
 
+  # Exposed for testing
   attr_reader :accounts
 end

@@ -62,8 +62,8 @@ RSpec.describe SimpleBank do
   describe "execute_transfers_from_file/1" do
     it "does read a csv file and perform transfers" do
       # IDs from @transfers_csv_path file
-      account_id, opening_balance = "6666234522226789", 100.0
-      recipient_id, recipient_balance = "1111834566661834", 0.0
+      account_id, opening_balance = "6666234522226789", 100.00
+      recipient_id, recipient_balance = "1111834566661834", 0.00
 
       acc_handler = AccountHandler.new({account_id => opening_balance, recipient_id => recipient_balance})
       bank = SimpleBank.new(acc_handler)
@@ -90,7 +90,6 @@ RSpec.describe SimpleBank do
     end
 
     it "does perform the transfers" do
-      p @transfer_tests_bank
       failures = @transfer_tests_bank.execute_transfers([[@account_id, @recipient_id, @transfer_amount]])
 
       expect(failures).to eql([])

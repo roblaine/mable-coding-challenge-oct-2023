@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 require "csv"
-require "simple_banking/errors"
-require "simple_banking/logging"
+
+require_relative "./errors"
+require_relative "./logging"
 
 include Logging
 
@@ -15,7 +16,7 @@ class CsvParser
     end
 
     # TODO: Using the above refactor, traverse the table to use returns the rows
-    if maybe_csv_data.length > 1
+    if maybe_csv_data.first.length > 1
       maybe_csv_data
     else
       raise Errors::FileTypeError
