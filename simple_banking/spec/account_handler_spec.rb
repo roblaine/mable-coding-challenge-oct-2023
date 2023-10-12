@@ -119,6 +119,20 @@ RSpec.describe AccountHandler do
       expect(accounts.read(@default_acc_id)).to eql(opening_balance)
       expect(accounts.read(@recipient)).to eql(recipient_funds)
     end
+
+    it "does not allow transfer from a non-existent account" do
+      accounts = AccountHandler.new({@recipient => 1.0})
+
+      expect{ accounts.transfer(@default_acc_id, @recipient, 0.1) }.to raise_error(Errors::InvalidAccountId)
+      expect(accounts.read(@recipient)).to eql(1.0)
+    end
+
+    it "does not allow transfer to a non-existent recipient" do
+      accounts = AccountHandler.new({@default_acc_id => 1.0})
+
+      expect{ accounts.transfer(@default_acc_id, "9999999999999999", 0.1) }.to raise_error(Errors::InvalidAccountId)
+      expect(accounts.read(@default_acc_id)).to eql(1.0)
+    end
   end
 
   describe "has_balance/2" do

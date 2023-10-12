@@ -42,6 +42,7 @@ class AccountHandler
   end
 
   def transfer(account_id, recipient_account_id, value)
+    # we should also assure that value > 0.0 in a real world use case
     if self.read(account_id) == nil
       raise Errors::InvalidAccountId
       account_id
