@@ -60,13 +60,18 @@ RSpec.describe SimpleBank do
   end
 
   describe "execute_transfers_from_file/1" do
-    it "does read a csv file and setup accounts" do
-      failures = @bank.execute_transfers_from_file(@sample_csv_path)
-      # account_ids from the fixture file
-      expected_accounts = ["1111834566661834", "6666234522226789"]
+    it "does read a csv file and perform transfers" do
+      # IDs from transfer file
+      account_id, opening_balance = "6666234522226789", 100.0
+      recipient_id, recipient_balance = "1111834566661834", 0.0
 
-      expect(failures).to eql([])
-      expect(@bank.accounts.accounts.keys.sort).to eql(expected_accounts.sort)
+      acc_handler = AccountHandler.new({account_id => opening_balance, recipient_id => recipient_balance})
+      bank = SimpleBank.new(acc_handler)
+
+      failed_transfers = @bank.execute_transfers_from_file(@transfers_csv_path)
+
+      expect(failed_transfers).to eql([])
+      expect(@bank.accounts.read(recipient_id)).to eql(recipient_balance + opening_balance)
     end
 
     it "does returns the filepath on a non csv file" do
@@ -79,7 +84,7 @@ RSpec.describe SimpleBank do
       fail
     end
 
-    it "does generate a list of failed transfers" do
+    it "does return a list of failed transfers" do
       fail
     end
 

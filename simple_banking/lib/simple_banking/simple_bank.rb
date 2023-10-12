@@ -39,7 +39,7 @@ class SimpleBank
     }.compact()
   end
 
-  def execute_transfers_from_file(path=@default_transfer_path)
+  def execute_transfers_from_file(file_path=@default_transfer_path)
     begin
       self.execute_transfers(@parser.read(file_path))
     rescue Errno::ENOENT
